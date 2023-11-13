@@ -8,12 +8,10 @@ import 'src/base_web_auth.dart';
 ///
 class GitHubOAuth2Client extends OAuth2Client {
   GitHubOAuth2Client(
-      {required String redirectUri, required String customUriScheme})
+      {required super.redirectUri, required super.customUriScheme})
       : super(
             authorizeUrl: 'https://github.com/login/oauth/authorize',
-            tokenUrl: 'https://github.com/login/oauth/access_token',
-            redirectUri: redirectUri,
-            customUriScheme: customUriScheme);
+            tokenUrl: 'https://github.com/login/oauth/access_token');
 
   @override
   Future<AccessTokenResponse> getTokenWithAuthCodeFlow(
