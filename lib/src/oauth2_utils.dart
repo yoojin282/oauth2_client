@@ -32,7 +32,7 @@ class OAuth2Utils {
       } else {
         val = v.trim();
       }
-      qsList.add(k + '=' + Uri.encodeComponent(val));
+      qsList.add('$k=${Uri.encodeComponent(val)}');
       // qsList.add(k + '=' + val);
     });
 

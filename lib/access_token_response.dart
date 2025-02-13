@@ -11,11 +11,13 @@ class AccessTokenResponse extends OAuth2Response {
 
   AccessTokenResponse.errorResponse() : super.errorResponse();
 
-  AccessTokenResponse.fromMap(Map<String, dynamic> map) : super.fromMap(map);
+  AccessTokenResponse.fromMap(super.map) : super.fromMap();
 
   @override
-  factory AccessTokenResponse.fromHttpResponse(http.Response response,
-      {List<String>? requestedScopes}) {
+  factory AccessTokenResponse.fromHttpResponse(
+    http.Response response, {
+    List<String>? requestedScopes,
+  }) {
     AccessTokenResponse resp;
 
     var defMap = {'http_status_code': response.statusCode};
@@ -35,25 +37,27 @@ class AccessTokenResponse extends OAuth2Response {
         int expiresIn;
 
         try {
-          expiresIn = rMap['expires_in'] is String
-              ? int.parse(rMap['expires_in'])
-              : rMap['expires_in'];
+          expiresIn =
+              rMap['expires_in'] is String
+                  ? int.parse(rMap['expires_in'])
+                  : rMap['expires_in'];
         } on FormatException {
           expiresIn = 0;
         }
 
         rMap['expires_in'] = expiresIn;
 
-        rMap['expiration_date'] = DateTime.now()
-            .add(Duration(seconds: expiresIn))
-            .millisecondsSinceEpoch;
+        rMap['expiration_date'] =
+            DateTime.now()
+                .add(Duration(seconds: expiresIn))
+                .millisecondsSinceEpoch;
       }
 
       resp = AccessTokenResponse.fromMap({...rMap, ...defMap});
     } else {
       resp = AccessTokenResponse.fromMap({
         ...defMap,
-        ...{'scope': requestedScopes}
+        ...{'scope': requestedScopes},
       });
     }
 
@@ -64,7 +68,7 @@ class AccessTokenResponse extends OAuth2Response {
   Map<String, dynamic> toMap() {
     return {
       ...respMap,
-      ...{'scope': scope}
+      ...{'scope': scope},
     };
   }
 
@@ -141,9 +145,10 @@ class AccessTokenResponse extends OAuth2Response {
     if (isValid()) {
       if (respMap.containsKey('expires_in')) {
         try {
-          expIn = respMap['expires_in'] is String
-              ? int.parse(respMap['expires_in'])
-              : respMap['expires_in'];
+          expIn =
+              respMap['expires_in'] is String
+                  ? int.parse(respMap['expires_in'])
+                  : respMap['expires_in'];
         } on FormatException {
           //Provide a fallback value if the expires_in parameter is not an integer...
           expIn = 60;
